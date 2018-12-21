@@ -1,0 +1,30 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}Sign Up{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/signin.css') }}">
+{% endblock %}
+{% block content %}
+    <div class="container">
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% block page_content %}{% endblock %}
+    </div>
+    <div class="container">
+
+        <form class="form-signin" action="{{ url_for('auth.register') }}" method="POST">
+            {{ form.hidden_tag() }}
+            {{ form.username(class="form-control") }}
+            {{ form.password(class="form-control") }}
+            {{ form.verifyPwd(class="form-control") }}
+            <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+            <br>
+            <a href="{{ url_for('auth.login') }}"><p style="text-align: center; color:#006dcc">返回登录</p></a>
+
+        </form>
+    </div>
+{% endblock %}
