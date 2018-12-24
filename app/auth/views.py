@@ -33,12 +33,21 @@ def login():
     login_form = LoginForm()
     if request.method == 'POST' and login_form.validate_on_submit():
         user = User.query.filter_by(username=login_form.username.data).first()
-        if not user or not user.verify_password(login_form.password.data):
-            flash('账号/密码错误')
-        else:
-            session['username'] = login_form.username.data
-            return redirect(url_for('main.user', username=login_form.username.data))
+        if user is not None and user.verify_password(login_form.password.data):
+            login_user(user)
+            print(session)
+            next_page = request.args.get('next')
+            if next_page is None or not next_page.startswith('/'):
+                next_page = url_for('main.user', username=user.username)
+            return redirect(next_page)
+        flash('账号/密码错误')
     else:
         if session.get('username'):
             return redirect(url_for('main.user', username=session.get('username')))
     return render_template('auth/login.html', form=login_form)
+
+
+@auth.route('/logout', methods=['GET', 'POST'])
+def logout():
+    logout_user()
+    return redirect(url_for('.login'))

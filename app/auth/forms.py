@@ -1,15 +1,13 @@
 # -*- coding:utf-8 -*-
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, EqualTo
 
 
 class LoginForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()], render_kw={'placeholder': u'用户名'})
     password = PasswordField('password', validators=[DataRequired()], render_kw={'placeholder': u'密码'})
-    # radio = R
-    # submit = SubmitField('Sign In')
 
 
 class RegisterForm(FlaskForm):

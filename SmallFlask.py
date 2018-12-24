@@ -66,7 +66,7 @@ def user(username):
     olduser = session.get('username')
     if not user or olduser != username:
         return redirect(url_for('login'))
-    return render_template('index.html', username=username)
+    return render_template('user.html', username=username)
 
 
 @app.route('/login', methods=['GET', 'POST'])

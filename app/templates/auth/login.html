@@ -19,11 +19,11 @@
             {{ form.hidden_tag() }}
             {{ form.username(class="form-control") }}
             {{ form.password(class="form-control") }}
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" value="remember-me"> 下次自动登录
-                </label>
-            </div>
+{#            <div class="checkbox">#}
+{#                <label>#}
+{#                    <input type="checkbox" value="remember-me"> 下次自动登录#}
+{#                </label>#}
+{#            </div>#}
             <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
             <br>
             <a href="{{ url_for('auth.register') }}" style="font-size: 14px"><p style="text-align: center; color:#006dcc">
