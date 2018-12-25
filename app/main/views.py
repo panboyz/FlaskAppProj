@@ -12,14 +12,17 @@ from ..decorators import admin_required
 @login_required
 @admin_required
 def index():
-    return render_template('index.html')
+    return render_template('main/index.html')
 
 
 @main.route('/user/<username>', methods=['GET', 'POST'])
 @login_required
 def user(username):
-    # user = User.query.filter_by(username=username).first()
-    # olduser = session.get('username')
-    # if not user or olduser != username:
-    #     return redirect(url_for('auth.login'))
-    return render_template('user.html', username=username)
+    return render_template('main/user.html', username=username)
+
+
+@main.route('/user/roleManage', methods=['GET'])
+@login_required
+@admin_required
+def role_manage():
+    return render_template('main/role.html')

@@ -10,13 +10,16 @@ class Role(db.Model):
     __tablename__ = 'role'
 
     id = db.Column(db.Integer, primary_key=True)
-    role = db.Column(db.Integer, index=True)
-    name = db.Column(db.String(16), unique=True)
+    role_name = db.Column(db.String(32), default='user', unique=True)
+    is_admin = db.Column(db.Boolean, default=False)
+    create_time = db.Column(db.DateTime)
+    update_time = db.Column(db.DateTime)
+    is_active = db.Column(db.Boolean, default=True)
 
-    users = db.relationship('User', backref='role')
+    users = db.relationship('User', backref='role', lazy='dynamic')
 
     def __repr__(self):
-        return 'User %s' % self.role
+        return 'Role %s' % self.role
 
 
 class User(UserMixin, db.Model):
@@ -26,6 +29,9 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(16), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+    create_time = db.Column(db.DateTime)
+    update_time = db.Column(db.DateTime)
+    is_active = db.Column(db.Boolean, default=True)
 
     @property
     def password(self):
@@ -45,3 +51,19 @@ class User(UserMixin, db.Model):
 @login_manage.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+#
+#
+# class Project(db.Model):
+#     __tablename__ = 'project'
+#
+#     id = db.Column(db.Integer, primary_key=True)
+#     project = db.Column(db.String(32), default='user', unique=True)
+#     group = db.Column(db.String(32), default=False)
+#     create_time = db.Column(db.DateTime)
+#     update_time = db.Column(db.DateTime)
+#     is_active = db.Column(db.Boolean, default=True)
+#
+#     users = db.relationship('User', backref='project', lazy='dynamic')
+#
+#     def __repr__(self):
+#         return 'Project %s' % self.project

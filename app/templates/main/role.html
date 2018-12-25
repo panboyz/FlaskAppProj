@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block page_content %}
+    <h2 class="sub-header">角色管理</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>角色id</th>
+                <th>角色名称</th>
+                <th>所属组</th>
+                <th>描述</th>
+                <th>是否是管理员</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>普通用户</td>
+                <td>中台</td>
+                <td>只是一个普通的使用者</td>
+                <td>否</td>
+                <th><a id="edit" href="#">编辑</a></th>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>管理员</td>
+                <td>中台</td>
+                <td>这是管理员</td>
+                <td>是</td>
+                <td>删除</td>
+            </tr>
+            </tbody>
+        </table>
+        <script>
+            var status = 0;
+            var edit = document.getElementById('edit');
+            var item = document.getElementsByTagName('td');
+            var item_length = item.length - 1
+            var item_value = new Array(item_length);
+
+            for (i = 0; i < item_length; i++) {
+                item_value[i] = item[i].innerHTML;
+            }
+
+            edit.onclick = function () {
+                if (status == 0) {
+                    edit.innerHTML = '保存';
+                    for (i = 0; i < item_length; i++) {
+                        item[i].innerHTML = '<input type="txt" class="item_input" value="' + item_value[i] + '">';
+                    }
+                    status = 1;
+                } else {
+                    edit.innerHTML = '编辑';
+                    var item_input = document.getElementsByClassName('item_input');
+                    for (i = 0; i < item_length; i++) {
+                        item_value[i] = item_input[i].value;
+                    }
+                    for (i = 0; i < item_length; i++) {
+                        item[i].innerHTML = item_value[i];
+                    }
+                    status = 0
+                }
+                return false;
+            }
+        </script>
+    </div>
+{% endblock %}
