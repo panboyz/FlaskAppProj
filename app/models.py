@@ -11,6 +11,8 @@ class Role(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     role_name = db.Column(db.String(32), default='user', unique=True)
+    group = db.Column(db.String(16))
+    desc = db.Column(db.String(128), nullable=True)
     is_admin = db.Column(db.Boolean, default=False)
     create_time = db.Column(db.DateTime)
     update_time = db.Column(db.DateTime)

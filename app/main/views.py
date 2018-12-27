@@ -3,7 +3,7 @@
 from flask import render_template
 from .. import db
 from . import main
-from ..models import User
+from ..models import User, Role
 from flask_login import login_required
 from ..decorators import admin_required
 
@@ -25,4 +25,5 @@ def user(username):
 @login_required
 @admin_required
 def role_manage():
-    return render_template('main/role.html')
+    roles = Role.query.filter_by(is_active=1).all()
+    return render_template('main/role.html', roles=roles)

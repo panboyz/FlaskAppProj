@@ -14,22 +14,34 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>1</td>
-                <td>普通用户</td>
-                <td>中台</td>
-                <td>只是一个普通的使用者</td>
-                <td>否</td>
-                <th><a id="edit" href="#">编辑</a></th>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>管理员</td>
-                <td>中台</td>
-                <td>这是管理员</td>
-                <td>是</td>
-                <td>删除</td>
-            </tr>
+            {% for role in roles %}
+                {% if role.is_active == 1 %}
+                    <tr>
+                        <td>{{ role.id }}</td>
+                        <td>{{ role.role_name }}</td>
+                        <td>{{ role.group }}</td>
+                        <td>{{ role.desc }}</td>
+                        <td>{% if role.is_admin %}是{% else %}否{% endif %}</td>
+                    <td><button>编辑</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+{#            <tr>#}
+{#                <td>1</td>#}
+{#                <td>普通用户</td>#}
+{#                <td>中台</td>#}
+{#                <td>只是一个普通的使用者</td>#}
+{#                <td>否</td>#}
+{#                <th><a id="edit" href="#">编辑</a></th>#}
+{#            </tr>#}
+{#            <tr>#}
+{#                <td>2</td>#}
+{#                <td>管理员</td>#}
+{#                <td>中台</td>#}
+{#                <td>这是管理员</td>#}
+{#                <td>是</td>#}
+{#                <td>删除</td>#}
+{#            </tr>#}
             </tbody>
         </table>
         <script>
@@ -47,7 +59,7 @@
                 if (status == 0) {
                     edit.innerHTML = '保存';
                     for (i = 0; i < item_length; i++) {
-                        item[i].innerHTML = '<input type="txt" class="item_input" value="' + item_value[i] + '">';
+                        item[i].innerHTML = '<input type="txt" style="width: 5%" class="item_input" value="' + item_value[i] + '">';
                     }
                     status = 1;
                 } else {
@@ -65,4 +77,5 @@
             }
         </script>
     </div>
+    <input type="text" style="width: 5%" class="item_input" value="123">
 {% endblock %}
