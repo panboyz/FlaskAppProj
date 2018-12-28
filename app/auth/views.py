@@ -35,7 +35,6 @@ def login():
         user = User.query.filter_by(username=login_form.username.data).first()
         if user is not None and user.verify_password(login_form.password.data):
             login_user(user)
-            print(session)
             next_page = request.args.get('next')
             if next_page is None or not next_page.startswith('/'):
                 next_page = url_for('main.user', username=user.username)

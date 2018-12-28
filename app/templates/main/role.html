@@ -22,7 +22,7 @@
                         <td>{{ role.group }}</td>
                         <td>{{ role.desc }}</td>
                         <td>{% if role.is_admin %}是{% else %}否{% endif %}</td>
-                    <td><button>编辑</button></td>
+                    <td><a href="{{ url_for('action.role_delete', id=role.id) }}"><button type="button" class="btn btn-danger">删除</button></a></td>
                     </tr>
                 {% endif %}
             {% endfor %}

@@ -23,7 +23,6 @@ def user(username):
 
 @main.route('/user/roleManage', methods=['GET'])
 @login_required
-@admin_required
 def role_manage():
     roles = Role.query.filter_by(is_active=1).all()
     return render_template('main/role.html', roles=roles)
