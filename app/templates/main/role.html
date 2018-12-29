@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block page_content %}
-    <h2 class="sub-header">角色管理</h2>
+    <h2 class="sub-header">角色管理
+        <a href="{{ url_for('action.add_role') }}">
+            <button type="button" style="text-align: center" class="btn btn-primary">新增</button>
+        </a></h2>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -22,26 +25,28 @@
                         <td>{{ role.group }}</td>
                         <td>{{ role.desc }}</td>
                         <td>{% if role.is_admin %}是{% else %}否{% endif %}</td>
-                    <td><a href="{{ url_for('action.role_delete', id=role.id) }}"><button type="button" class="btn btn-danger">删除</button></a></td>
+                        <td><a href="{{ url_for('action.delete_role', id=role.id) }}">
+                            <button type="button" class="btn btn-danger">删除</button>
+                        </a></td>
                     </tr>
                 {% endif %}
             {% endfor %}
-{#            <tr>#}
-{#                <td>1</td>#}
-{#                <td>普通用户</td>#}
-{#                <td>中台</td>#}
-{#                <td>只是一个普通的使用者</td>#}
-{#                <td>否</td>#}
-{#                <th><a id="edit" href="#">编辑</a></th>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <td>2</td>#}
-{#                <td>管理员</td>#}
-{#                <td>中台</td>#}
-{#                <td>这是管理员</td>#}
-{#                <td>是</td>#}
-{#                <td>删除</td>#}
-{#            </tr>#}
+            {#            <tr>#}
+            {#                <td>1</td>#}
+            {#                <td>普通用户</td>#}
+            {#                <td>中台</td>#}
+            {#                <td>只是一个普通的使用者</td>#}
+            {#                <td>否</td>#}
+            {#                <th><a id="edit" href="#">编辑</a></th>#}
+            {#            </tr>#}
+            {#            <tr>#}
+            {#                <td>2</td>#}
+            {#                <td>管理员</td>#}
+            {#                <td>中台</td>#}
+            {#                <td>这是管理员</td>#}
+            {#                <td>是</td>#}
+            {#                <td>删除</td>#}
+            {#            </tr>#}
             </tbody>
         </table>
         <script>
