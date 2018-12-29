@@ -1,8 +1,10 @@
 # -*- coding:utf-8 -*-
 
+from datetime import datetime
 from . import db
 from . import login_manage
 from flask_login import UserMixin
+from .common.func import current_time
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -15,6 +17,8 @@ class Role(db.Model):
     desc = db.Column(db.String(128), nullable=True)
     is_admin = db.Column(db.Boolean, default=False)
     is_active = db.Column(db.Boolean, default=True)
+    create_time = db.Column(db.DateTime, default=datetime.now())
+    update_time = db.Column(db.DateTime, default=datetime.now())
 
     users = db.relationship('User', backref='role', lazy='dynamic')
 
@@ -38,6 +42,8 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
     is_active = db.Column(db.Boolean, default=True)
+    create_time = db.Column(db.DateTime, default=datetime.now())
+    update_time = db.Column(db.DateTime, default=datetime.now())
 
     @property
     def password(self):
