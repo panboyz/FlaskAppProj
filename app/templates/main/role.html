@@ -10,9 +10,10 @@
             <tr>
                 <th>角色id</th>
                 <th>角色名称</th>
-                <th>所属组</th>
                 <th>描述</th>
-                <th>是否是管理员</th>
+                <th>管理员</th>
+                <th>创建时间</th>
+                <th>更新时间</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -22,11 +23,15 @@
                     <tr>
                         <td>{{ role.id }}</td>
                         <td>{{ role.role_name }}</td>
-                        <td>{{ role.group }}</td>
                         <td>{{ role.desc }}</td>
                         <td>{% if role.is_admin %}是{% else %}否{% endif %}</td>
+                        <td>{{ role.create_time }}</td>
+                        <td>{{ role.update_time }}</td>
+                        <td><a href="{{ url_for('action.edit_role', id=role.id) }}">
+                            <button type="button" class="btn btn-primary">编辑</button>
+                        </a></td>
                         <td><a href="{{ url_for('action.delete_role', id=role.id) }}">
-                            <button type="button" class="btn btn-danger">删除</button>
+                            <button type="button" class="btn btn-danger" onclick="return del()">删除</button>
                         </a></td>
                     </tr>
                 {% endif %}
@@ -83,4 +88,11 @@
         </script>
     </div>
     <input type="text" style="width: 5%" class="item_input" value="123">
+    <script type="text/javascript">
+        function del() {
+            if (!confirm("确认删除?")) {
+                window.event.returnValue = false;
+            }
+        }
+    </script>
 {% endblock %}

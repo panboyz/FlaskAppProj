@@ -13,21 +13,23 @@ class Role(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     role_name = db.Column(db.String(32), default='user', unique=True)
-    group = db.Column(db.String(16))
     desc = db.Column(db.String(128), nullable=True)
     is_admin = db.Column(db.Boolean, default=False)
     is_active = db.Column(db.Boolean, default=True)
-    create_time = db.Column(db.DateTime, default=datetime.now())
-    update_time = db.Column(db.DateTime, default=datetime.now())
+    create_time = db.Column(db.String(32), default=current_time())
+    update_time = db.Column(db.String(32), default=current_time())
 
     users = db.relationship('User', backref='role', lazy='dynamic')
 
     @staticmethod
     def insert_role():
-        role = Role.query.filter_by(role_name='admin')
-        if role is None:
-            admin = Role(role_name='admin', group='admin', desc='superAdministrator', is_admin=1, is_active=1)
+        admin_role = Role.query.filter_by(role_name='admin').first()
+        # user_role = Role.query.filter_by(role_name='user').first()
+        if admin_role is None:
+            admin = Role(role_name='admin', desc='superAdministrator', is_admin=1)
+            # user = Role(role_name='user', group='user', desc='commonUser', is_admin=0)
             db.session.add(admin)
+            # db.session.add(user)
             db.session.commit()
 
     def __repr__(self):
@@ -40,10 +42,12 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(16), unique=True, index=True)
     password_hash = db.Column(db.String(128))
+    group = db.Column(db.String(16))
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+    is_manager = db.Column(db.Boolean, default=False)
     is_active = db.Column(db.Boolean, default=True)
-    create_time = db.Column(db.DateTime, default=datetime.now())
-    update_time = db.Column(db.DateTime, default=datetime.now())
+    create_time = db.Column(db.String(32), default=current_time())
+    update_time = db.Column(db.String(32), default=current_time())
 
     @property
     def password(self):
@@ -58,10 +62,11 @@ class User(UserMixin, db.Model):
 
     @staticmethod
     def insert_admin():
-        user = Role.query.filter_by(username='admin')
-        role = Role.query.filter_by(role_name='admin')
+        user = User.query.filter_by(username='admin').first()
+        role = Role.query.filter_by(role_name='admin').first()
         if user is None:
-            admin = User(username='admin', password_hash=generate_password_hash('admin'), role_id=role.id)
+            admin = User(username='admin', password_hash=generate_password_hash('admin'), group='admin', is_manager=1,
+                         role_id=role.id)
             db.session.add(admin)
             db.session.commit()
 

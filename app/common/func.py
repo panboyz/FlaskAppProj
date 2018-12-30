@@ -5,10 +5,10 @@ import time, calendar
 from random import randint as ran
 from random import randrange
 import hashlib
-import threading
-import json
+from datetime import datetime
 
 random_list = lambda _list:(_list[randrange(len(_list))])
+
 
 def IDGenerator():
     ratios = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]
@@ -54,5 +54,5 @@ def setUnnecessaryParam(body, param, default_value):
 
 
 def current_time():
-    localTime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-    return localTime
+    currentTime = datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
+    return currentTime

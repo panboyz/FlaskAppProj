@@ -21,6 +21,8 @@
             {{ form.username(class="form-control") }}
             {{ form.password(class="form-control") }}
             {{ form.verifyPwd(class="form-control") }}
+            {{ form.group.label }}{{ form.group(class="form-control") }}
+            <br>
             <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
             <br>
             <a href="{{ url_for('auth.login') }}"><p style="text-align: center; color:#006dcc">返回登录</p></a>

@@ -1,131 +1,97 @@
 {% extends "base.html" %}
 {% block page_content %}
-        <h2 class="sub-header">Section title</h2>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Header</th>
-                    <th>Header</th>
-                    <th>Header</th>
-                    <th>Header</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>1,001</td>
-                    <td>Lorem</td>
-                    <td>ipsum</td>
-                    <td>dolor</td>
-                    <td>sit</td>
-                </tr>
-                <tr>
-                    <td>1,002</td>
-                    <td>amet</td>
-                    <td>consectetur</td>
-                    <td>adipiscing</td>
-                    <td>elit</td>
-                </tr>
-                <tr>
-                    <td>1,003</td>
-                    <td>Integer</td>
-                    <td>nec</td>
-                    <td>odio</td>
-                    <td>Praesent</td>
-                </tr>
-                <tr>
-                    <td>1,003</td>
-                    <td>libero</td>
-                    <td>Sed</td>
-                    <td>cursus</td>
-                    <td>ante</td>
-                </tr>
-                <tr>
-                    <td>1,004</td>
-                    <td>dapibus</td>
-                    <td>diam</td>
-                    <td>Sed</td>
-                    <td>nisi</td>
-                </tr>
-                <tr>
-                    <td>1,005</td>
-                    <td>Nulla</td>
-                    <td>quis</td>
-                    <td>sem</td>
-                    <td>at</td>
-                </tr>
-                <tr>
-                    <td>1,006</td>
-                    <td>nibh</td>
-                    <td>elementum</td>
-                    <td>imperdiet</td>
-                    <td>Duis</td>
-                </tr>
-                <tr>
-                    <td>1,007</td>
-                    <td>sagittis</td>
-                    <td>ipsum</td>
-                    <td>Praesent</td>
-                    <td>mauris</td>
-                </tr>
-                <tr>
-                    <td>1,008</td>
-                    <td>Fusce</td>
-                    <td>nec</td>
-                    <td>tellus</td>
-                    <td>sed</td>
-                </tr>
-                <tr>
-                    <td>1,009</td>
-                    <td>augue</td>
-                    <td>semper</td>
-                    <td>porta</td>
-                    <td>Mauris</td>
-                </tr>
-                <tr>
-                    <td>1,010</td>
-                    <td>massa</td>
-                    <td>Vestibulum</td>
-                    <td>lacinia</td>
-                    <td>arcu</td>
-                </tr>
-                <tr>
-                    <td>1,011</td>
-                    <td>eget</td>
-                    <td>nulla</td>
-                    <td>Class</td>
-                    <td>aptent</td>
-                </tr>
-                <tr>
-                    <td>1,012</td>
-                    <td>taciti</td>
-                    <td>sociosqu</td>
-                    <td>ad</td>
-                    <td>litora</td>
-                </tr>
-                <tr>
-                    <td>1,013</td>
-                    <td>torquent</td>
-                    <td>per</td>
-                    <td>conubia</td>
-                    <td>nostra</td>
-                </tr>
-                <tr>
-                    <td>1,014</td>
-                    <td>per</td>
-                    <td>inceptos</td>
-                    <td>himenaeos</td>
-                    <td>Curabitur</td>
-                </tr>
-                <tr>
-                    <td>1,015</td>
-                    <td>sodales</td>
-                    <td>ligula</td>
-                    <td>in</td>
-                    <td>libero</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+    <h2 class="sub-header">用户管理</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>用户id</th>
+                <th>用户名</th>
+                <th>所属组</th>
+                <th>组长</th>
+                <th>创建时间</th>
+                <th>更新时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                {% if current_user.role.is_admin == 1 or (user.is_active == 1 and user.group == current_user.group) %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.group }}</td>
+                        <td>{% if user.is_manager %}是{% else %}否{% endif %}</td>
+                        <td>{{ user.create_time }}</td>
+                        <td>{{ user.update_time }}</td>
+                        {% if current_user.is_manager == 1 %}
+                            <td><a href="{{ url_for('action.edit_user', id=user.id) }}">
+                                <button type="button" class="btn btn-primary">编辑</button>
+                            </a></td>
+                            <td><a href="{{ url_for('action.delete_user', id=user.id) }}">
+                                <button type="button" class="btn btn-danger" onclick="return del()">删除</button>
+                            </a></td>
+                        {% endif %}
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            {#            <tr>#}
+            {#                <td>1</td>#}
+            {#                <td>普通用户</td>#}
+            {#                <td>中台</td>#}
+            {#                <td>只是一个普通的使用者</td>#}
+            {#                <td>否</td>#}
+            {#                <th><a id="edit" href="#">编辑</a></th>#}
+            {#            </tr>#}
+            {#            <tr>#}
+            {#                <td>2</td>#}
+            {#                <td>管理员</td>#}
+            {#                <td>中台</td>#}
+            {#                <td>这是管理员</td>#}
+            {#                <td>是</td>#}
+            {#                <td>删除</td>#}
+            {#            </tr>#}
+            </tbody>
+        </table>
+        <script>
+            var status = 0;
+            var edit = document.getElementById('edit');
+            var item = document.getElementsByTagName('td');
+            var item_length = item.length - 1
+            var item_value = new Array(item_length);
+
+            for (i = 0; i < item_length; i++) {
+                item_value[i] = item[i].innerHTML;
+            }
+
+            edit.onclick = function () {
+                if (status == 0) {
+                    edit.innerHTML = '保存';
+                    for (i = 0; i < item_length; i++) {
+                        item[i].innerHTML = '<input type="txt" style="width: 5%" class="item_input" value="' + item_value[i] + '">';
+                    }
+                    status = 1;
+                } else {
+                    edit.innerHTML = '编辑';
+                    var item_input = document.getElementsByClassName('item_input');
+                    for (i = 0; i < item_length; i++) {
+                        item_value[i] = item_input[i].value;
+                    }
+                    for (i = 0; i < item_length; i++) {
+                        item[i].innerHTML = item_value[i];
+                    }
+                    status = 0
+                }
+                return false;
+            }
+        </script>
+    </div>
+    <input type="text" style="width: 5%" class="item_input" value="123">
+    <script type="text/javascript">
+        function del() {
+            if (!confirm("确认删除?")) {
+                window.event.returnValue = false;
+            }
+        }
+    </script>
 {% endblock %}
