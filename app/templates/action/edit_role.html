@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block page_content %}
+    <h2 class="sub-header">角色编辑<a href="{{ url_for('main.role_manage') }}">
+            <button type="button" style="text-align: center" class="btn btn-primary">返回</button>
+        </a></h2>
+
+    {{ wtf.quick_form(editRoleForm) }}
+
+{% endblock %}
