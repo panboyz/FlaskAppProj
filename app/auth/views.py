@@ -5,6 +5,7 @@ from . import auth
 from ..models import User, Role
 from .forms import LoginForm, RegisterForm
 from flask_login import login_user, logout_user
+from ..common.func import current_time
 from flask import render_template, request, redirect, url_for, flash, session
 
 
@@ -16,7 +17,7 @@ def register():
         role = Role.query.filter_by(role_name='user').first()
         if not user:
             try:
-                newuser = User(username=register_form.username.data, group=register_form.group.data, role_id=role.id)
+                newuser = User(username=register_form.username.data, group=register_form.group.data, role_id=role.id, create_time=current_time(), update_time=current_time())
                 newuser.password = register_form.password.data
                 db.session.add(newuser)
                 db.session.commit()
