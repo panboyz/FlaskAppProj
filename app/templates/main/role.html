@@ -19,22 +19,20 @@
             </thead>
             <tbody>
             {% for role in roles %}
-                {% if role.is_active == 1 %}
-                    <tr>
-                        <td>{{ role.id }}</td>
-                        <td>{{ role.role_name }}</td>
-                        <td>{{ role.desc }}</td>
-                        <td>{% if role.is_admin %}是{% else %}否{% endif %}</td>
-                        <td>{{ role.create_time }}</td>
-                        <td>{{ role.update_time }}</td>
-                        <td><a href="{{ url_for('action.edit_role', id=role.id) }}">
-                            <button type="button" class="btn btn-primary">编辑</button>
-                        </a></td>
-                        <td><a href="{{ url_for('action.delete_role', id=role.id) }}">
-                            <button type="button" class="btn btn-danger" onclick="return del()">删除</button>
-                        </a></td>
-                    </tr>
-                {% endif %}
+                <tr>
+                    <td>{{ role.id }}</td>
+                    <td>{{ role.role_name }}</td>
+                    <td>{{ role.desc }}</td>
+                    <td>{% if role.is_admin %}是{% else %}否{% endif %}</td>
+                    <td>{{ role.create_time }}</td>
+                    <td>{{ role.update_time }}</td>
+                    <td><a href="{{ url_for('action.edit_role', id=role.id) }}">
+                        <button type="button" class="btn btn-primary">编辑</button>
+                    </a></td>
+                    <td><a href="{{ url_for('action.delete_role', id=role.id) }}">
+                        <button type="button" class="btn btn-danger" onclick="return del()">删除</button>
+                    </a></td>
+                </tr>
             {% endfor %}
             {#            <tr>#}
             {#                <td>1</td>#}

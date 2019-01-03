@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block page_content %}
+<h2 class="sub-header">小组管理<a href="{{ url_for('action.add_group') }}">
+            <button type="button" style="text-align: center" class="btn btn-primary">新增</button>
+        </a></h2>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>小组id</th>
+            <th>小组名</th>
+            <th>小组描述</th>
+            <th>创建时间</th>
+            <th>更新时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for group in groups %}
+        <tr>
+            <td>{{ group.id }}</td>
+            <td>{{ group.group_name }}</td>
+            <td>{{ group.desc }}</td>
+            <td>{{ group.create_time }}</td>
+            <td>{{ group.update_time }}</td>
+            <td><a href="{{ url_for('action.edit_user', id=group.id) }}">
+                <button type="button" class="btn btn-primary">编辑</button>
+            </a></td>
+            <td><a href="{{ url_for('action.delete_user', id=group.id) }}">
+                <button type="button" class="btn btn-danger" onclick="return del()">删除</button>
+            </a></td>
+        </tr>
+        {% endfor %}
+        {#            <tr>#}
+        {#                <td>1</td>#}
+        {#                <td>普通用户</td>#}
+        {#                <td>中台</td>#}
+        {#                <td>只是一个普通的使用者</td>#}
+        {#                <td>否</td>#}
+        {#                <th><a id="edit" href="#">编辑</a></th>#}
+        {#            </tr>#}
+        {#            <tr>#}
+        {#                <td>2</td>#}
+        {#                <td>管理员</td>#}
+        {#                <td>中台</td>#}
+        {#                <td>这是管理员</td>#}
+        {#                <td>是</td>#}
+        {#                <td>删除</td>#}
+        {#            </tr>#}
+        </tbody>
+    </table>
+    <script>
+        var status = 0;
+        var edit = document.getElementById('edit');
+        var item = document.getElementsByTagName('td');
+        var item_length = item.length - 1
+        var item_value = new Array(item_length);
+
+        for (i = 0; i < item_length; i++) {
+            item_value[i] = item[i].innerHTML;
+        }
+
+        edit.onclick = function () {
+            if (status == 0) {
+                edit.innerHTML = '保存';
+                for (i = 0; i < item_length; i++) {
+                    item[i].innerHTML = '<input type="txt" style="width: 5%" class="item_input" value="' + item_value[i] + '">';
+                }
+                status = 1;
+            } else {
+                edit.innerHTML = '编辑';
+                var item_input = document.getElementsByClassName('item_input');
+                for (i = 0; i < item_length; i++) {
+                    item_value[i] = item_input[i].value;
+                }
+                for (i = 0; i < item_length; i++) {
+                    item[i].innerHTML = item_value[i];
+                }
+                status = 0
+            }
+            return false;
+        }
+    </script>
+</div>
+<input type="text" style="width: 5%" class="item_input" value="123">
+<script type="text/javascript">
+    function del() {
+        if (!confirm("确认删除?")) {
+            window.event.returnValue = false;
+        }
+    }
+</script>
+{% endblock %}

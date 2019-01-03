@@ -20,7 +20,7 @@
                     <tr>
                         <td>{{ user.id }}</td>
                         <td>{{ user.username }}</td>
-                        <td>{{ user.group }}</td>
+                        <td>{{ user.group.group_name }}</td>
                         <td>{% if user.is_manager %}是{% else %}否{% endif %}</td>
                         <td>{{ user.create_time }}</td>
                         <td>{{ user.update_time }}</td>

@@ -27,3 +27,15 @@ class EditUserForm(FlaskForm):
                         choices=[('中台', '中台'), ('理财', '理财'), ('债转', '债转'), ('机构', '机构'), ('散标', '散标')])
     is_manager = BooleanField('是否组长')
     submit = SubmitField('保存')
+
+
+class AddGroupForm(FlaskForm):
+    group_name = StringField('小组名', validators=[DataRequired()], render_kw={'placeholder': u'小组名'})
+    desc = TextAreaField('小组描述', validators=[DataRequired(), Length(max=50, message='不能超过50字')], render_kw={'placeholder': u'小组描述'})
+    submit = SubmitField('提交')
+
+
+class EditGroupForm(FlaskForm):
+    group_name = StringField('小组名', validators=[DataRequired()], render_kw={'placeholder': u'小组名'})
+    desc = TextAreaField('角色描述', validators=[DataRequired(), Length(max=50, message='不能超过50字')], render_kw={'placeholder': u'小组描述'})
+    submit = SubmitField('保存')

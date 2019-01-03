@@ -2,9 +2,9 @@
 
 from .. import db
 from . import action
-from ..models import User, Role
+from ..models import User, Role, Group
 from ..common.func import current_time
-from .forms import AddRoleForm, EditRoleForm, EditUserForm
+from .forms import AddRoleForm, EditRoleForm, EditUserForm, AddGroupForm, EditGroupForm
 from ..decorators import admin_required, manager_required
 from flask_login import current_user
 from flask import render_template, redirect, url_for, flash, session
@@ -133,3 +133,75 @@ def delete_user(id):
     else:
         flash('无权限删除')
     return redirect(url_for('main.user_manage'))
+
+
+@action.route('/group/add_group', methods=['GET', 'POST'])
+@admin_required
+def add_group():
+    groupForm = AddGroupForm()
+    group_name = groupForm.group_name.data
+    desc = groupForm.desc.data
+    if groupForm.validate_on_submit():
+        group = Group.query.filter_by(group_name=group_name).first()
+        if group is None:
+            group = Group(group_name=group_name, desc=desc, create_time=current_time(), update_time=current_time())
+            try:
+                db.session.add(group)
+                db.session.commit()
+                return redirect(url_for('main.group_manage'))
+            except Exception as e:
+                print(e)
+                flash(u'添加小组异常')
+                db.session.rollback()
+        else:
+            flash('小组已存在')
+    return render_template('action/add_group.html', groupForm=groupForm)
+
+
+@action.route('/group/edit_group/<int:id>', methods=['GET', 'POST'])
+@admin_required
+def edit_group(id):
+    editGroupForm = EditGroupForm()
+    group_name = editGroupForm.group_name.data
+    desc = editGroupForm.desc.data
+    is_admin = editGroupForm.is_admin.data
+    group = Group.query.filter_by(id=id).first()
+    if is_admin == 2:
+        is_admin = 0
+    if group.group_name != 'admin':
+        if editGroupForm.validate_on_submit():
+            group.group_name = group_name
+            group.desc = desc
+            group.update_time = current_time()
+            try:
+                db.session.add(group)
+                db.session.commit()
+                return redirect(url_for('main.group_manage'))
+            except Exception as e:
+                print(e)
+                flash(u'编辑用户异常')
+                db.session.rollback()
+    else:
+        flash(u'不允许编辑该角色')
+        return redirect(url_for('main.group_manage'))
+    EditGroupForm.group_name.data = group.group_name
+    EditGroupForm.desc.data = group.desc
+    EditGroupForm.is_admin.data = group.is_admin
+    return render_template('action/edit_group.html', EditGroupForm=EditGroupForm)
+
+
+@action.route('/group/delete_group/<int:id>', methods=['GET', 'POST'])
+@admin_required
+def delete_group(id):
+    group = Group.query.filter_by(id=id).first()
+    if not (group.is_active == 1 and group.is_admin == 1):
+        try:
+            db.session.delete(group)
+            db.session.commit()
+        except Exception as e:
+            print(e)
+            flash(u'删除角色异常')
+            db.session.rollback()
+    else:
+        flash('不能删除该角色')
+    return redirect(url_for('main.group_manage'))

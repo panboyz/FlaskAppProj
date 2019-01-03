@@ -41,8 +41,8 @@
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
-                    <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">项目管理</a></li>
+                    <li class="active"><a href="{{ url_for('main.user', username=current_user.username) }}">首页 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="{{ url_for('main.group_manage') }}">小组管理</a></li>
                     <li><a href="#">环境管理</a></li>
                     <li><a href="#">工具管理</a></li>
                 </ul>
